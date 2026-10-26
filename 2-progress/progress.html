@@ -1,1 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جاري توجيه القياس...</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .loader {
+            font-size: 1.2rem;
+            color: #ff4500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader">جاري تحويلك لشاشة القياس...</div>
+
+    <script>
+        // قراءة نوع القياس المخزن
+        var metricType = localStorage.getItem('current_metric_type');
+
+        // التوجيه الذكي للملف المطلوب داخل نفس المجلد
+        if (metricType === 'reps') {
+            window.location.href = 'reps.html';
+        } else if (metricType === 'weight') {
+            window.location.href = 'weight.html';
+        } else if (metricType === 'time') {
+            window.location.href = 'time.html';
+        } else {
+            alert('نوع القياس غير معرف!');
+            window.location.href = '../1-exercises/exercise.html';
+        }
+    </script>
+</body>
+  </html>
 
