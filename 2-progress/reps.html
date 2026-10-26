@@ -1,1 +1,280 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل التكرارات - Ali loup</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent-color: #ff4500;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --transition: all 0.3s ease;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-btn {
+            background: #252525;
+            border: 1px solid #444;
+            color: var(--text-primary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .screen-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .exercise-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border-right: 5px solid var(--accent-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .exercise-card h2 {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .form-group {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        input {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .save-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.3);
+        }
+
+        .save-btn:active {
+            transform: scale(0.98);
+        }
+
+        .history-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-section h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            background: #252525;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .history-date {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- الشريط العلوي للرجوع -->
+        <div class="header-bar">
+            <a href="../1-exercises/exercise.html" class="back-btn" title="الرجوع للتمارين">‹</a>
+            <div class="screen-title">تسجيل التكرارات (Reps)</div>
+        </div>
+
+        <!-- بطاقة اسم التمرين -->
+        <div class="exercise-card">
+            <h2 id="ex-title-display">جاري تحميل التمرين...</h2>
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">سجل إنجازك لهذا اليوم</span>
+        </div>
+
+        <!-- نموذج إدخال التكرارات -->
+        <div class="form-group">
+            <label for="reps-input">عدد التكرارات (Reps):</label>
+            <input type="number" id="reps-input" placeholder="مثال: 15" min="1">
+            
+            <label for="sets-input">عدد المجموعات (Sets):</label>
+            <input type="number" id="sets-input" placeholder="مثال: 3" min="1" value="1">
+
+            <button class="save-btn" onclick="saveProgress()">حفظ النتيجة 💾</button>
+        </div>
+
+        <!-- سجل التمارين السابقة -->
+        <div class="history-section">
+            <h3>السجل السابق</h3>
+            <div id="history-list">
+                <p style="color: var(--text-secondary); font-size: 0.85rem; text-align: center;">لا توجد سجلات بعد.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // قراءة بيانات التمرين من localStorage
+        const exId = localStorage.getItem('current_ex_id') || 'default_ex';
+        const exName = localStorage.getItem('current_ex_name') || 'تمرين غير معروف';
+
+        // عرض اسم التمرين في العنوان
+        document.getElementById('ex-title-display').innerText = exName;
+
+        // مفتاح التخزين خاص بهذا التمرين فقط لضمان عدم تداخل البيانات
+        const storageKey = 'crossfit_reps_' + exId;
+
+        // تحميل السجلات عند فتح الصفحة
+        window.onload = function() {
+            loadHistory();
+        };
+
+        function saveProgress() {
+            const reps = document.getElementById('reps-input').value;
+            const sets = document.getElementById('sets-input').value;
+
+            if (!reps || reps <= 0) {
+                alert('الرجاء إدخال عدد تكرارات صحيح!');
+                return;
+            }
+
+            const currentDate = new Date().toLocaleDateString('ar-EG', {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            const record = {
+                reps: reps,
+                sets: sets,
+                date: currentDate
+            };
+
+            // جلب السجلات القديمة أو إنشاء مصفوفة جديدة
+            let history = JSON.parse(localStorage.getItem(storageKey)) || [];
+            history.unshift(record); // إضافة السجل الجديد في البداية
+
+            // الحفظ في localStorage
+            localStorage.setItem(storageKey, JSON.stringify(history));
+
+            // تفريغ الحقول وتحديث القائمة
+            document.getElementById('reps-input').value = '';
+            loadHistory();
+        }
+
+        function loadHistory() {
+            const historyList = document.getElementById('history-list');
+            let history = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+            if (history.length === 0) {
+                historyList.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.85rem; text-align: center;">لا توجد سجلات بعد.</p>';
+                return;
+            }
+
+            historyList.innerHTML = '';
+            history.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+                div.innerHTML = `
+                    <span><b>${item.sets}</b> مجموعات × <b>${item.reps}</b> تكرار</span>
+                    <span class="history-date">${item.date}</span>
+                `;
+                historyList.appendChild(div);
+            });
+        }
+    </script>
+</body>
+  </html>
+          
