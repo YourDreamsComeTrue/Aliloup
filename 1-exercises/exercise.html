@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ali loup - Crossfit</title>
+    <link rel="stylesheet" href="exercise-style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- 1. شاشة البداية -->
+        <div id="home-screen" class="screen active">
+            <div class="app-title-box">
+                <h1>Ali loup</h1>
+                <p>Crossfit</p>
+            </div>
+            <button class="start-btn" onclick="goToMenu()">ابدأ</button>
+        </div>
+
+        <!-- 2. شاشة الأقسام الرئيسية -->
+        <div id="menu-screen" class="screen">
+            <div class="header-bar">
+                <button class="back-btn" onclick="goToHome()" title="الرئيسية">‹</button>
+                <div class="screen-title">القائمة الرئيسية</div>
+            </div>
+
+            <div class="main-header-title">الأقسام التدريبية</div>
+
+            <div class="card" onclick="openCategory(1)">
+                <h2>1. تدريبات الجمباز ووزن الجسم</h2>
+                <span>Gymnastics & Bodyweight</span>
+            </div>
+
+            <div class="card" onclick="openCategory(2)">
+                <h2>2. رفع الأثقال والتدريبات الوظيفية</h2>
+                <span>Weightlifting & Functional Training</span>
+            </div>
+
+            <div class="card" onclick="openCategory(3)">
+                <h2>3. تمارين التحمل والقلب</h2>
+                <span>Monostructural & Cardio</span>
+            </div>
+        </div>
+
+        <!-- 3. شاشة تفاصيل التمارين -->
+        <div id="detail-screen" class="screen">
+            <div class="header-bar">
+                <button class="back-btn" onclick="goToMenu()" title="الرجوع للأقسام">‹</button>
+                <div class="screen-title" id="category-title-bar">التفاصيل</div>
+            </div>
+            <div id="exercises-container">
+                <!-- يتم تعبئته ديناميكياً عبر JavaScript -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- استدعاء ملفات البرمجة -->
+    <script src="exercise-engine.js"></script>
+    <script src="exercise.js"></script>
+</body>
+</html>
 
